@@ -6,7 +6,7 @@ const sequelize = new Sequelize({
   host: 'localhost',
   database: 'inventory_db',
   username: 'root',
-  password: 'acighine',
+  password: '', //! Poner tu contrasenia 
   models: [Product],
 });
 
