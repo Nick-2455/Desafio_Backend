@@ -1,5 +1,6 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { Product } from '../models/product';
+import { promises } from 'dns';
 
 export const getAllProducts = async (req: Request, res: Response) => {
   try {
@@ -19,15 +20,22 @@ export const createProduct = async (req: Request, res: Response) => {
   }
 };
 
-export const getProductById = async (req: Request, res: Response) => {
-  try {
-    const product = await Product.findByPk(req.params.id);
-    if (!product) return res.status(404).json({ error: 'Product not found' });
-    res.json(product);
-  } catch (err) {
-    res.status(500).json({ error: 'Error fetching product' });
-  }
+export const getProductById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+        const productId = req.params.id;
+        const product = await Product.findByPk(productId);
+
+        if (!product) {
+            res.status(404).json({ message: "Product not found" });
+            return;
+        }
+
+        res.json(product);
+    } catch (error) {
+        next(error); // Correcto manejo de errores en Express
+    }
 };
+
 
 export const updateProduct = async (req: Request, res: Response) => {
   try {
