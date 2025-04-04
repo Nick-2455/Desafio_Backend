@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { Product } from '../models/product';
-import { Category } from '../models/category';
-// import { promises } from 'dns';
+import { Category } from '../models/categories';
+import { promises } from 'dns';
 
 export const getAllProducts = async (req: Request, res: Response) => {
   try {

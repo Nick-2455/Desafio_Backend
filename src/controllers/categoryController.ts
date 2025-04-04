@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { Category } from '../models/category';
+import { Category } from '../models/categories';
 
 export const getCategories = async (req: Request, res: Response) => {
     try {
@@ -12,8 +12,8 @@ export const getCategories = async (req: Request, res: Response) => {
 
 export const createCategory = async (req: Request, res: Response) => {
     try {
-        const { name } = req.body;
-        const newCategory = await Category.create({ name });
+        const {Nombre } = req.body;
+        const newCategory = await Category.create({ Nombre });
         res.status(201).json(newCategory);
     } catch (error) {
         res.status(500).json({ error: "Error al crear categoría" });

@@ -1,7 +1,7 @@
 import {
-  Table, Model, Column, DataType, CreatedAt, UpdatedAt
+  Table, Model, Column, DataType, CreatedAt, UpdatedAt, ForeignKey, BelongsTo
 } from 'sequelize-typescript';
-import { Category } from './category';
+import { Category } from './categories';
 
 @Table({
   tableName: 'products',
@@ -14,7 +14,16 @@ export class Product extends Model {
   @Column({ type: DataType.DOUBLE}) Precio!: number;
   @Column({ type: DataType.STRING}) Proveedor!: string;
   @Column({ type: DataType.INTEGER}) Cantidad!: number;
-  @Column({ type: DataType.STRING, references: { model: Category, key: 'Nombre' } }) Categoria!: string;
+
+  @ForeignKey(() => Category)
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
+  Categoria!: string;
+
+  @BelongsTo(() => Category)
+  category!: Category;
 
   @CreatedAt @Column({ type: DataType.DATE }) Creado!: Date;
   @UpdatedAt @Column({ type: DataType.DATE }) Modificado!: Date;

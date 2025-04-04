@@ -11,7 +11,7 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/products', productRoutes);
-app.use("/products", categoryRoutes);
+app.use("/categories", categoryRoutes);
 
 sequelize.sync().then(() => {
   console.log('DB connected');
