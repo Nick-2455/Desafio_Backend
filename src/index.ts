@@ -2,6 +2,7 @@ import express from 'express';
 import morgan from 'morgan';
 import sequelize from './connection/connection';
 import productRoutes from './routes/productRoutes';
+import categoryRoutes from "./routes/categoryRoutes";
 
 const app = express();
 const PORT = 3000;
@@ -10,6 +11,7 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/products', productRoutes);
+app.use("/products", categoryRoutes);
 
 sequelize.sync().then(() => {
   console.log('DB connected');
