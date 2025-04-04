@@ -1,36 +1,55 @@
-# Inventario de Productos - Backend 
+# 📦 Backend de Sistema de Inventario
 
-## 🚀 Descripción General
-Este proyecto es un **CRUD (Create, Read, Update, Delete)** desarrollado con **Node.js, Express, TypeScript, Sequelize y MySQL**. Su objetivo es manejar un inventario de productos con operaciones básicas de administración a través de una API REST.
+Este proyecto es un backend desarrollado en **TypeScript**, usando **Express** y **Sequelize**, conectado a una base de datos **MySQL**. Incluye entidades como:
 
----
-
-## 🤖 Tecnologías utilizadas
-- **Node.js**: entorno de ejecución de JavaScript
-- **Express**: framework de servidor HTTP
-- **TypeScript**: superset de JavaScript tipado
-- **Sequelize**: ORM para conectarse con MySQL
-- **MySQL**: base de datos relacional
-- **Nodemon + Concurrently**: para desarrollo en tiempo real
+-  Productos
+-  Proveedores
+-  Categorías
 
 ---
 
-## 📂 Estructura de carpetas
+## 🚀 Cómo clonar y correr el proyecto
+
+### 1. Clonar el repositorio
+
+Abre una terminal y escribe:
+
+```bash
+git clone https://github.com/tu-usuario/nombre-del-repo.git
+cd nombre-del-repo
+````
+
+---
+
+### 2. Instalar dependencias
+
+```bash
+npm install
 ```
-src/
-├── connection/        # Conexión a la base de datos
-├── controllers/       # Lógica de negocio
-├── models/            # Definición del modelo Product
-├── routes/            # Endpoints de la API
-└── index.ts           # Archivo principal
-database.sql           # Script para crear base de datos y tabla
-.gitignore             # Archivo para excluir node_modules y dist
-```
 
 ---
 
-## 🔗 Conexión a la base de datos
-Archivo: `src/connection/connection.ts`
+### 3. Configurar la base de datos
+
+#### ✅ Opción recomendada (rápida):
+
+1. Abre **MySQL Workbench** o tu cliente favorito.
+    
+2. Crea la base de datos:
+    
+
+```sql
+CREATE DATABASE inventory_db;
+```
+
+3. Ejecuta el archivo `database.sql` que viene en el repositorio para crear las tablas (`suppliers`, `categories`, `products`).
+    
+
+---
+
+### 4. Verificar conexión en `src/connection/connection.ts`
+
+Asegúrate de tener la configuración correcta:
 
 ```ts
 const sequelize = new Sequelize({
@@ -38,111 +57,106 @@ const sequelize = new Sequelize({
   host: 'localhost',
   database: 'inventory_db',
   username: 'root',
-  password: 'TU_CONTRASENA',
-  models: [Product],
+  password: 'TU_CONTRASEÑA',
+  models: [Product, Supplier, Category]
 });
 ```
 
-> Asegúrate de crear la base de datos `inventory_db` antes de correr el servidor. Puedes usar el archivo `database.sql` incluido en el proyecto para crear la base de datos y la tabla fácilmente.
+> 💡 Cambia el `username` y `password` según tu configuración local.
 
 ---
 
-## 🌐 Endpoints disponibles
+### 5. Compilar el proyecto
 
-### POST `/products`
-- Crea un nuevo producto
-- Body:
-```json
-{
-  "Nombre": "Jabón artesanal",
-  "Descripcion": "Con lavanda y avena",
-  "Precio": 65.5,
-  "Proveedor": "Saboneria Danna",
-  "Cantidad": 25,
-  "Categoria": "Limpieza"
-}
-```
+Este backend está hecho en TypeScript, así que compílalo:
 
-### GET `/products`
-- Obtiene todos los productos
-
-### GET `/products/:id`
-- Obtiene un producto por su ID
-
-### PATCH `/products/:id`
-- Actualiza campos específicos de un producto
-- Body:
-```json
-{
-  "Precio": 72,
-  "Cantidad": 30
-}
-```
-
-### DELETE `/products/:id`
-- Elimina un producto por ID
-
----
-
-## 📃 Modelo: `Product`
-Archivo: `src/models/product.ts`
-
-```ts
-@Table({
-  tableName: 'products',
-  createdAt: 'Creado',
-  updatedAt: 'Modificado'
-})
-export class Product extends Model {
-  @Column({ type: DataType.STRING }) Nombre!: string;
-  @Column({ type: DataType.STRING }) Descripcion!: string;
-  @Column({ type: DataType.DOUBLE }) Precio!: number;
-  @Column({ type: DataType.STRING }) Proveedor!: string;
-  @Column({ type: DataType.INTEGER }) Cantidad!: number;
-
-  @CreatedAt @Column({ type: DataType.DATE }) Creado!: Date;
-  @UpdatedAt @Column({ type: DataType.DATE }) Modificado!: Date;
-}
-```
-
----
-
-## 📝 Comandos importantes
-
-### Instalar dependencias
 ```bash
-npm install
+npx tsc
 ```
 
-### Compilar TypeScript
+Esto creará la carpeta `/dist` con el código en JavaScript.
+
+---
+
+### 6. Levantar el servidor
+
+#### En modo producción:
+
 ```bash
-npm run build
+npm run start
 ```
 
-### Iniciar servidor en modo desarrollo
+#### En modo desarrollo (con recarga automática):
+
 ```bash
 npm run dev
 ```
 
----
-
-## 📌 Buenas prácticas con Git
-- No subir `node_modules/`, `dist/`, ni archivos sensibles.
-- Usar un archivo `.gitignore` con el siguiente contenido:
+Verás en consola algo como:
 
 ```
-node_modules/
-dist/
-.env
+DB connected
+Server running on port 3000
 ```
-
-- Subir únicamente el código fuente, scripts de base de datos y archivos de configuración necesarios.
 
 ---
 
-## ✅ Resultado esperado
-- API REST funcional en `http://localhost:3000/products`
-- Conexión estable con base de datos MySQL
-- Capacidad para crear, leer, actualizar y eliminar productos
+### 7. Probar el API con Postman
+
+Puedes probar las siguientes rutas:
+
+#### 🧾 Proveedores (`/suppliers`)
+
+- `GET /suppliers` → Ver todos
+    
+- `GET /suppliers/1` → Ver uno por ID
+    
+- `POST /suppliers`
+    
+
+```json
+{
+  "Nombre": "TechWorld",
+  "Contacto": "Juan Pérez",
+  "Telefono": "6621234567",
+  "Correo": "contacto@techworld.com",
+  "Direccion": "Calle 123, Hermosillo"
+}
+```
+
+#### 🗂 Categorías (`/categories`)
+
+- `GET /categories`
+    
+- `POST /categories`
+    
+
+```json
+{
+  "Nombre": "Laptops"
+}
+```
+
+#### 📦 Productos (`/products`)
+
+> Asegúrate de tener `supplierId` y `categoryId` válidos antes de crear un producto.
+
+- `GET /products`
+    
+- `POST /products`
+    
+
+```json
+{
+  "Nombre": "Laptop HP",
+  "Descripcion": "Laptop de gama alta",
+  "Precio": 13500.99,
+  "Cantidad": 10,
+  "supplierId": 1,
+  "categoryId": 1
+}
+```
+
+---
 
 
