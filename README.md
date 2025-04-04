@@ -58,7 +58,8 @@ const sequelize = new Sequelize({
   "Descripcion": "Con lavanda y avena",
   "Precio": 65.5,
   "Proveedor": "Saboneria Danna",
-  "Cantidad": 25
+  "Cantidad": 25,
+  "Categoria: "Limpieza"
 }
 ```
 
