@@ -23,3 +23,9 @@ CREATE TABLE suppliers (
   updatedAt DATETIME
 );
  
+CREATE TABLE categories (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  Nombre VARCHAR(255),
+  Creado DATETIME,
+  Modificado DATETIME
+);

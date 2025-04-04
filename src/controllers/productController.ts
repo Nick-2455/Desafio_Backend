@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { Product } from '../models/product';
+import { Category } from '../models/categories';
 import { promises } from 'dns';
 
 export const getAllProducts = async (req: Request, res: Response) => {
@@ -16,9 +17,11 @@ export const createProduct = async (req: Request, res: Response) => {
     const newProduct = await Product.create(req.body);
     res.status(201).json(newProduct);
   } catch (err) {
+    console.error('Error al crear producto:', err); 
     res.status(500).json({ error: 'Error creating product' });
   }
 };
+
 
 export const getProductById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
@@ -32,7 +35,7 @@ export const getProductById = async (req: Request, res: Response, next: NextFunc
 
         res.json(product);
     } catch (error) {
-        next(error); // Correcto manejo de errores en Express
+        next(error); 
     }
 };
 
@@ -52,5 +55,24 @@ export const deleteProduct = async (req: Request, res: Response) => {
     res.json({ message: 'Product deleted' });
   } catch (err) {
     res.status(500).json({ error: 'Error deleting product' });
+  }
+};
+
+export const getProductsCategory = async (req: Request, res: Response) => {
+  try {
+    const { categoryId } = req.params; 
+
+    const products = await Product.findAll({
+      where: { categoryId }, 
+      include: Category,
+    });
+
+    if (products.length === 0) {
+      return res.status(404).json({ message: "No hay productos en esta categoría" });
+    }
+
+    res.json(products);
+  } catch (error) {
+    res.status(500).json({ error: "Error al obtener productos por categoría" });
   }
 };
