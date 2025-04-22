@@ -6,10 +6,13 @@ CREATE TABLE products (
   Nombre VARCHAR(255),
   Descripcion TEXT,
   Precio DOUBLE,
-  Proveedor VARCHAR(255),
   Cantidad INT,
+  supplierId INT,
+  categoryId INT,
   Creado DATETIME,
-  Modificado DATETIME
+  Modificado DATETIME,
+  FOREIGN KEY (supplierId) REFERENCES suppliers(id),
+  FOREIGN KEY (categoryId) REFERENCES categories(id)
 );
 
 CREATE TABLE suppliers (

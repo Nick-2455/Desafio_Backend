@@ -8,7 +8,7 @@ const sequelize = new Sequelize({
   host: 'localhost',
   database: 'inventory_db',
   username: 'root',
-  password: 'acighine', //! pon tu contraseña
+  password: '', //! pon tu contraseña
   models: [Product, Supplier, Category]
 });
 
