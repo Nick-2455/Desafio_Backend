@@ -6,6 +6,7 @@ import { promises } from 'dns';
 export const getAllProducts = async (req: Request, res: Response) => {
   try {
     const products = await Product.findAll();
+    res.setHeader("Cache-Control", "no-store");
     res.json(products);
   } catch (err) {
     res.status(500).json({ error: 'Error fetching products' });
@@ -41,13 +42,24 @@ export const getProductById = async (req: Request, res: Response, next: NextFunc
 
 
 export const updateProduct = async (req: Request, res: Response) => {
+  const id = parseInt(req.params.id, 10);
+  const updates = req.body;
+
   try {
-    await Product.update(req.body, { where: { id: req.params.id } });
-    res.json({ message: 'Product updated' });
-  } catch (err) {
-    res.status(500).json({ error: 'Error updating product' });
+    const [updated] = await Product.update(updates, { where: { id } });
+
+    if (updated) {
+      const updatedProduct = await Product.findByPk(id);
+      return res.status(200).json(updatedProduct);
+    }
+
+    return res.status(404).json({ message: "Product not found" });
+  } catch (error) {
+    console.error("Error updating product:", error);
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
+
 
 export const deleteProduct = async (req: Request, res: Response) => {
   try {

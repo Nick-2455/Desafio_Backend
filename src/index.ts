@@ -11,10 +11,12 @@ import { Product } from './models/product';
 import { Supplier } from './models/supplier';
 import { Category } from './models/categories';
 
+const cors = require('cors');
 const app = express();
 const PORT = 3000;
 
 // Middlewares
+app.use(cors({origin:true}));
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -25,7 +27,7 @@ app.use('/suppliers', supplierRoutes);
 app.use('/categories', categoryRoutes);
 
 // Sincronizar con la base de datos
-sequelize.sync({ force: true }) 
+sequelize.sync() 
   .then(() => {
     console.log('DB connected');
     app.listen(PORT, () => {
