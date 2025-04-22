@@ -12,7 +12,7 @@ const router = Router();
 router.get('/', getAllProducts);
 router.get('/:id', getProductById);
 router.post('/', createProduct);
-router.patch('/:id', updateProduct);
+router.put('/:id', updateProduct);
 router.delete('/:id', deleteProduct);
 
 export default router;
