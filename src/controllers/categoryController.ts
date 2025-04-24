@@ -14,6 +14,7 @@ export const getCategoryById = async (req: Request, res: Response) => {
   try {
     const category = await Category.findByPk(req.params.id);
     if (!category) return res.status(404).json({ error: 'Categoría no encontrada' });
+    res.setHeader("Cache-Control", "no-store");
     res.json(category);
   } catch (error) {
     res.status(500).json({ error: 'Error al obtener la categoría' });
