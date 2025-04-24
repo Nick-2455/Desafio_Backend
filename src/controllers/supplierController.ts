@@ -15,6 +15,7 @@ export const getSupplierById = async (req: Request, res: Response) => {
     const id = parseInt(req.params.id);
     const supplier = await Supplier.findByPk(id);
     if (!supplier) return res.status(404).json({ error: 'Supplier not found' });
+    res.setHeader("Cache-Control", "no-store");
     res.json(supplier);
   } catch (error) {
     res.status(500).json({ error: 'Error fetching supplier' });
